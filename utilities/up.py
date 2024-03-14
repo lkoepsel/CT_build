@@ -3,8 +3,8 @@ import re
 import serial
 import serial.tools.list_ports
 import sys
-from CoolTerm.CT_connect import conn
-from CoolTerm.CT_disconnect import disc
+from utilities.CT_connect import conn
+from utilities.CT_disconnect import disc
 import time
 import datetime
 

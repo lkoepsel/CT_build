@@ -3,8 +3,8 @@ import re
 from mpremote.transport_serial import SerialTransport
 import serial.tools.list_ports
 import sys
-from CoolTerm.CT_connect import conn
-from CoolTerm.CT_disconnect import disc
+from utilities.CT_connect import conn
+from utilities.CT_disconnect import disc
 
 
 folder = re.compile(r'^/')
