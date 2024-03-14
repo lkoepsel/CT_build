@@ -6,7 +6,7 @@ CoolTerm Module
 
     Requires Python 3
 
-    Roger Meier, v1.4, October 2022
+    Roger Meier, v1.6, November 2023
 
 
 Create a new CoolTermSocket as follows:
@@ -45,6 +45,7 @@ CoolTermsSocket supports the following commands:
     ShowWindow(ID as integer):  Brings the specified window to the foreground.
     Print(ID as integer) as Boolean:  Prints the current contents of the specified window. Returns True on success.
     GetFrontmostWindow as integer: Returns the ID of the frontmost terminal window. Returns -1 if there are no open or visible windows.
+    SetFrontmostWindow(ID as integer, BringToFront as boolean):  Makes the specified window the frontmost window. Also brings the window in front of all other windows on the system if BringToFront is True.
     PauseDisplay(ID as integer, Value as boolean):  Pauses or unpauses the display of the specified window.
 
     Serial Port commands
@@ -135,6 +136,7 @@ class CoolTermSocket:
         self.OP_SHOW_WINDOW = 31  # ShowWindow(ID as integer)
         self.OP_PRINT = 32  # Print(ID as integer) as Boolean
         self.OP_GET_FRONTMOST_WINDOW = 33  # GetFrontmostWindow as integer
+        self.OP_SET_FRONTMOST_WINDOW = 35  # SetFrontmostWindow(ID as integer, BringToFront as boolean)
         self.OP_PAUSE_DISPLAY = 34  # PauseDisplay(ID as integer, Value as boolean)
 
         # Serial Port commands
@@ -184,6 +186,8 @@ class CoolTermSocket:
         self.OP_CAPTURE_PAUSE = 92  # CapturePause(ID as integer)
         self.OP_CAPTURE_RESUME = 93  # CaptureResume(ID as integer)
         self.OP_CAPTURE_STOP = 94  # CaptureStop(ID as integer)
+         # v1.3, added 1 line
+        self.OP_CAPTURE_APPEND = 95  # CaptureAppend(ID as integer, FilePath as String) as boolean
 
         # Connection Setting Commands
         # ---------------------------
@@ -400,6 +404,11 @@ class CoolTermSocket:
         else:
             return False
 
+    def SetFrontmostWindow(self, ID, BringToFront): # 1.6, added method
+        Packet = self._GetPacket(self.OP_SET_FRONTMOST_WINDOW, ID, str(BringToFront))
+        Response = self._SendPacket(Packet)   
+        return self._isAck(Response)
+            
     def PauseDisplay(self, ID, Value):
         Packet = self._GetPacket(self.OP_PAUSE_DISPLAY, ID, str(Value))
         Response = self._SendPacket(Packet)
@@ -655,6 +664,17 @@ class CoolTermSocket:
 
     def SendTextFile(self, ID, FilePath):
         Packet = self._GetPacket(self.OP_SEND_TEXTFILE, ID, FilePath)
+        Response = self._SendPacket(Packet)
+        if self._isAck(Response):
+            if self._getData(Response) == "True":
+                return True
+            else:
+                return False
+        else:
+            return False
+
+    def CaptureAppend(self, ID, FilePath): # v1.3, added method
+        Packet = self._GetPacket(self.OP_CAPTURE_APPEND, ID, FilePath)
         Response = self._SendPacket(Packet)
         if self._isAck(Response):
             if self._getData(Response) == "True":
