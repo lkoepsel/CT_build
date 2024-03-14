@@ -1,11 +1,11 @@
 """
-CoolTerm.
+CT_build
 
-CoolTerm scripting capabilities
+CoolTerm and Sublime Text scripting capabilities
 """
 
-__version__ = "0.1.0"
-__author__ = 'Roger Meier'
-__credits__ = 'the-meiers.org'
+__version__ = "2.0"
+__author__ = 'Lief Koepsel'
+__credits__ = 'wellys.com'
 
 from .CoolTerm import CoolTermSocket

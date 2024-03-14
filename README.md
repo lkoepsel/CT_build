@@ -14,16 +14,16 @@ I've been able to get this to work well on *macOS* and *Windows*. I have been un
 
 ### 1. Clone the repository and install
 ```bash
-git clone git@github.com:lkoepsel/CoolTerm_pip.git
+git clone git@github.com:lkoepsel/CT_build.git
 # change to the directory
-cd CoolTerm_pip
+cd CT_build
 # install software
 pip install .
 ```
 ### OR Install from GitHub
 
 ```bash
-pip install git+https://github.com/lkoepsel/CoolTerm_pip#egg=CoolTerm
+pip install git+https://github.com/lkoepsel/CT_build
 ```
 
 ### 2. Activate CoolTerm scripting
