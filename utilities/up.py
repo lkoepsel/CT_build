@@ -205,7 +205,7 @@ def up(port, forthfile, nld):
     """
     Builds an FlashForth application on a board.
     Use with Sublime Text build automation
-    https://github.com/lkoepsel/CoolTerm_pip
+    https://github.com/lkoepsel/CT_build
 
     \b
     * Requires a text file containing FlashForth words

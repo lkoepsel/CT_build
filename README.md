@@ -1,9 +1,12 @@
-# CoolTerm & Sublime Text package for scripting capabilities
-## Previously CoolTerm_pip which has been deprecated
-A python package to provide scripting capability for [CoolTerm](https://freeware.the-meiers.org) as well as automating other activities (see *mpbuild*) for MicroPython and FlashForth. By installing via `pip`, one can easily use the scripting capabilities of CoolTerm via *python*.
+# CT_build: CoolTerm & Sublime Text package for scripting capabilities
+
+### Repository was previously CoolTerm_pip 
+### CoolTerm_pip has been deprecated, please use this repository
+
+A python package providing scripting capability for [CoolTerm](https://freeware.the-meiers.org) along with [Sublime Text](https://www.sublimetext.com/index2) for automating activities for MicroPython, C and FlashForth. By installing via `pip`, one can easily use the scripting capabilities of CoolTerm via *python*.
 
 ## Description
-Its useful to move the focus to *CoolTerm*, once a automated *build* or *up*load has been completed. This scripting enhancement allows you to immediately begin interacting with the microcontroller using *CoolTerm*. The connection script will make the appropriate changes required for activating the *CoolTerm* window on *macOS* (using *AppleScript*) or on *Windows* (using *pygetwindow*). 
+Its useful to move the focus to *CoolTerm*, once a automated *build* or *upload* has been completed. This scripting enhancement allows you to immediately begin interacting with the microcontroller using *CoolTerm*. The connection script will make the appropriate changes required for activating the *CoolTerm* window on *macOS* (using *AppleScript*) or on *Windows* (using *pygetwindow*). 
 
 In this example, I use the *build system* on *Sublime Text 4* (**ST4**).
 
@@ -29,8 +32,8 @@ pip install git+https://github.com/lkoepsel/CT_build
 ### 2. Activate CoolTerm scripting
 To use scripting with CoolTerm, you will need to enable it in Preferences. Go to CoolTerm -> Preferences -> Scripting and check the box `Enable Remote Control Socket`. If on the Mac, be sure to check `Enable AppleScript`. If you see the error *"Could not connect to CoolTerm"*, more than likely it is due to not enabling this preference. 
 
-### 3. Add build automation to Sublime Text 4 (ST4)
-#### AVR_C - automates a `make` commands for building C programs on the Uno (*AVR family*)
+## Add build automation to Sublime Text 4 (ST4)
+### AVR_C - automates `make` commands for building C programs on the Uno (*AVR family*)
 Save this file as *Make AVR_C.sublime-build* using Tools -> Build System -> New Build System in **ST4**
 ```json
 {
@@ -57,7 +60,10 @@ Save this file as *Make AVR_C.sublime-build* using Tools -> Build System -> New 
 	]
 }
 ```
-#### FlashForth - automates uploading a file to a board running FlashForth
+### FlashForth - automates uploading a file to a board running FlashForth
+Save as *FlashForth.sublime-build* using Tools -> Build System -> New Build System in ST4. There are two versions to upload to the *Uno*:
+1) No delays - if upload finishes successfully, continue to use
+2) Slight delay per line - if upload seems to overwhelm FlashForth, you can slow it down using the -n option. 
 ```json
 {
 
@@ -98,7 +104,7 @@ Save this file as *MicroPython.sublime-build* using Tools -> Build System -> New
 
 }
 ```
-### Build a MicroPython Application - `mpbuild`
+## Building a MicroPython Application - `mpbuild`
 This repo also installs `mpbuild` which allows you to build an application by creating a text file containing the instructions as to how/where to copy files required for the application. 
 
 Detailed explanation can be found in my repository [microserver](https://github.com/lkoepsel/microserver). In short:
