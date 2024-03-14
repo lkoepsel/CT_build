@@ -35,7 +35,7 @@ def check_port(port, verbose):
 
 
 @click.command('build')
-@click.version_option("2.0.1", prog_name="mpbuild")
+@click.version_option("2.0.2", prog_name="mpbuild")
 @click.option('-p', '--port', required=False, type=str,
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('build',

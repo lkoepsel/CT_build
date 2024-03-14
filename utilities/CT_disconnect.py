@@ -2,7 +2,7 @@
 # Disconnect CoolTerm from serial port
 
 import sys
-from CoolTerm import CoolTermSocket
+from utilities.CoolTerm import CoolTermSocket
 
 
 def disc():

@@ -4,7 +4,7 @@
 
 import sys
 import time
-from CoolTerm import CoolTermSocket
+from utilities.CoolTerm import CoolTermSocket
 import platform
 
 OS = platform.system()
