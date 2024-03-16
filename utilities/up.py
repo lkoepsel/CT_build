@@ -15,7 +15,7 @@ main_prog = re.compile(r'^\+')
 change = re.compile(r'^!')
 
 
-def xfr(fname, ser_port, dt):
+def xfr(fname, ser_port, dt, c):
 
     # check input line regex
     badline = b'?\x15\r\n'                  # bad line (compilation error)
@@ -31,7 +31,7 @@ def xfr(fname, ser_port, dt):
     try:
         # Wait for a ready response from a warm boot, prior to uploading file
         resp = warm_ready(ser_port, dt)
-        clean_orig = clean_file(fname)
+        clean_orig = clean_file(fname, c)
         error_occurred = False
         for n, line in enumerate(clean_orig[0], 1):
             if line == 'empty\n':
@@ -68,7 +68,7 @@ def xfr(fname, ser_port, dt):
                 error_occurred = True
                 print(f"{nl}**** Error Occurred ****")
                 print(f"line {clean_orig[1][n]} was '{line.strip()}'")
-                print(f"Response was {str(resp)=}")
+                print(f"Response was {str(resp)}")
                 print(f"**** End of Error ****{nl}")
                 break
             time.sleep(int(dt) * .001)
@@ -95,7 +95,7 @@ def xfr(fname, ser_port, dt):
         sys.exit(1)
 
 
-def clean_file(ff_file):
+def clean_file(ff_file, c):
     f = []
     c_line = 1
     lines = []
@@ -110,7 +110,12 @@ def clean_file(ff_file):
             # print(f"{n=} {c_line=} {no_comments}")
             lines.append(n)
             c_line += 1
-    return(f, lines)
+    if c:
+        for clean_line in f:
+            print(f"{clean_line}", end="")
+        sys.exit()
+    else:
+        return(f, lines)
 
 
 # warm_ready sends a warm reset and waits for an ok
@@ -193,15 +198,17 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.0.2", prog_name="up")
+@click.version_option("2.1", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
                 type=click.Path(exists=True, readable=True),
                 required=True)
-@click.option('-n', '--nexlinedelays', 'nld', default=0,
+@click.option('-c', '--clean', 'clean', is_flag=True, default=False,
+              help='Print clean file to be transferred and exit.')
+@click.option('-d', '--delay_line', 'delay_line', default=0,
               help='delay in milliseconds * 10 per line, default is 0')
-def up(port, forthfile, nld):
+def up(port, forthfile, delay_line, verbose):
     """
     Builds an FlashForth application on a board.
     Use with Sublime Text build automation
@@ -209,8 +216,10 @@ def up(port, forthfile, nld):
 
     \b
     * Requires a text file containing FlashForth words
-    * Use '-n 3' or any variation to delay between lines, use if upload has
+    * Use '-d n' for a n*10ms delay between lines, use if upload has
     errors uploading due to transfer speed
+    * Use '-c' to view the exact lines which are transferred, before transfer,
+    file is cleaned of all comments, increasing transfer speed
     """
 
     disc()
@@ -223,10 +232,10 @@ def up(port, forthfile, nld):
     click.echo(f"Building FF app using {forthfile} file on {port}")
     ser = serial.Serial(port, 250000, timeout=1)
     t0 = datetime.datetime.now()
-    n = xfr(forthfile, ser, nld)
+    n = xfr(forthfile, ser, delay_line, verbose)
     et = datetime.datetime.now() - t0
     s = int(n[1] / et.total_seconds())
-    print(f'\n{n[2]} lines, {et.total_seconds():4.2f} secs, {s} bytes/sec')
+    print(f'\n{n[2]} lines, {et.total_seconds(): 4.2f} secs, {s} bytes/sec')
 
     conn()
     sys.exit()

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='CT_build',
-    version='2.0.2',
+    version='2.1',
     # This tells setuptools to include any directories, and subdirectories,
     # which include an __init__.py file
     packages=find_packages(),
