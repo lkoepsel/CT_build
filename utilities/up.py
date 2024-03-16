@@ -216,10 +216,12 @@ def up(port, forthfile, delay_line, verbose):
 
     \b
     * Requires a text file containing FlashForth words
-    * Use '-d n' for a n*10ms delay between lines, use if upload has
-    errors uploading due to transfer speed
+    * -p port is not required, use if up is not finding the proper serial port,
+    it will guess using 'usbmodem' or 'COM' as an indicator
     * Use '-c' to view the exact lines which are transferred, before transfer,
     file is cleaned of all comments, increasing transfer speed
+    * Use '-d n' for a n*10ms delay between lines, use if upload has
+    errors uploading due to transfer speed
     """
 
     disc()
