@@ -198,7 +198,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.1", prog_name="up")
+@click.version_option("2.1.1", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
@@ -208,7 +208,7 @@ def check_port():
               help='Print clean file to be transferred and exit.')
 @click.option('-d', '--delay_line', 'delay_line', default=0,
               help='delay in milliseconds * 10 per line, default is 0')
-def up(port, forthfile, delay_line, verbose):
+def up(port, forthfile, delay_line, clean):
     """
     Builds an FlashForth application on a board.
     Use with Sublime Text build automation
@@ -234,7 +234,7 @@ def up(port, forthfile, delay_line, verbose):
     click.echo(f"Building FF app using {forthfile} file on {port}")
     ser = serial.Serial(port, 250000, timeout=1)
     t0 = datetime.datetime.now()
-    n = xfr(forthfile, ser, delay_line, verbose)
+    n = xfr(forthfile, ser, delay_line, clean)
     et = datetime.datetime.now() - t0
     s = int(n[1] / et.total_seconds())
     print(f'\n{n[2]} lines, {et.total_seconds(): 4.2f} secs, {s} bytes/sec')
