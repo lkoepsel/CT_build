@@ -83,7 +83,7 @@ def xfr(fname, ser_port, dt, c):
             print("New line sent to close last word in the file.")
 
         if not error_occurred:
-            print(f"{nl}0 errors")
+            print(f"{nl}Success!")
             print(f"{resp} was response to last line in file")
         return [error_occurred, n_bytes_sent, lineno]
 
@@ -198,7 +198,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.1.1", prog_name="up")
+@click.version_option("2.1.2", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
