@@ -198,7 +198,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.1.2", prog_name="up")
+@click.version_option("2.1.3", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
@@ -232,7 +232,7 @@ def up(port, forthfile, delay_line, clean):
             sys.exit(1)
 
     click.echo(f"Building FF app using {forthfile} file on {port}")
-    ser = serial.Serial(port, 250000, timeout=1)
+    ser = serial.Serial(port, 1000000, timeout=1)
     t0 = datetime.datetime.now()
     n = xfr(forthfile, ser, delay_line, clean)
     et = datetime.datetime.now() - t0
