@@ -73,7 +73,7 @@ def xfr(fname, ser_port, dt, c, v):
                 break
             else:
                 if v:
-                    print(f"{clean_orig[1][n]} {str(resp)}")
+                    print(f"{clean_orig[1][n]} {str(resp, 'utf8')}")
             time.sleep(int(dt) * .001)
 
         # Determine if last line is a line feed, if not
@@ -203,7 +203,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.3", prog_name="up")
+@click.version_option("2.3.1", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
