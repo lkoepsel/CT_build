@@ -15,7 +15,7 @@ main_prog = re.compile(r'^\+')
 change = re.compile(r'^!')
 
 
-def xfr(fname, ser_port, dt, c):
+def xfr(fname, ser_port, dt, c, v):
 
     # check input line regex
     badline = b'?\x15\r\n'                  # bad line (compilation error)
@@ -71,6 +71,9 @@ def xfr(fname, ser_port, dt, c):
                 print(f"Response was {str(resp)}")
                 print(f"**** End of Error ****{nl}")
                 break
+            else:
+                if v:
+                    print(f"{clean_orig[1][n]} {str(resp)}")
             time.sleep(int(dt) * .001)
 
         # Determine if last line is a line feed, if not
@@ -200,7 +203,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.2", prog_name="up")
+@click.version_option("2.3", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
@@ -212,7 +215,9 @@ def check_port():
               help='delay in milliseconds * 10 per line, default is 0')
 @click.option('-b', '--baud', 'baud', default=1000000,
               help='baud rate of serial port, default is 1,000,000')
-def up(port, forthfile, delay_line, clean, baud):
+@click.option('-v', '--verbose', 'verbose', is_flag=True, default=False,
+              help='print response to every line')
+def up(port, forthfile, delay_line, clean, baud, verbose):
     """
     Builds an FlashForth application on a board.
     Use with Sublime Text build automation
@@ -241,7 +246,7 @@ def up(port, forthfile, delay_line, clean, baud):
     click.echo(f"Building FF app using {forthfile} file on {port}")
     ser = serial.Serial(port, baud, timeout=1)
     t0 = datetime.datetime.now()
-    n = xfr(forthfile, ser, delay_line, clean)
+    n = xfr(forthfile, ser, delay_line, clean, verbose)
     et = datetime.datetime.now() - t0
     s = int(n[1] / et.total_seconds())
     print(f'\n{n[2]} lines, {et.total_seconds(): 4.2f} secs, {s} bytes/sec')
