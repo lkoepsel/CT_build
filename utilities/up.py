@@ -191,7 +191,9 @@ def ram_ready(c):
 
 def check_port():
     for p in sorted(serial.tools.list_ports.comports()):
-        if ('usbmodem' in p.device) or ('COM' in p.device):
+        if ('usbmodem' in p.device)\
+                or ('usbserial' in p.device)\
+                or ('COM' in p.device):
             return(p.device)
     click.echo("No valid serial ports found.")
     return None
