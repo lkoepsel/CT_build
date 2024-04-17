@@ -65,7 +65,7 @@ def xfr(fname, ser_port, dt, c, v):
                 error_occurred = "?"
             elif resp.endswith(defined):
                 error_occurred = "DEFINED"
-            elif resp_line.contains(compile_error):
+            elif compile_error in resp:
                 error_occurred = "COMPILE ONLY"
             elif not resp.startswith(del_marker) and error_occurred == '':
                 print(f"{nl}**** Error Occurred ****")
@@ -207,7 +207,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.3.6", prog_name="up")
+@click.version_option("2.3.7", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
