@@ -20,7 +20,7 @@ def xfr(fname, ser_port, dt, c, v):
     # check input line regex
     badline = b'?\x15\r\n'                  # bad line (compilation error)
     defined = b'DEFINED\r\n'                # word already defined
-    compile_error = b'COMPILE ONLY\r\n'     # compile only error
+    compile_error = b'COMPILE ONLY'     # compile only error
     del_marker = b'-'                       # starts with -, delete marker
 
     lineno = 0
@@ -207,7 +207,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.3.7", prog_name="up")
+@click.version_option("2.3.8", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
