@@ -20,7 +20,7 @@ def xfr(fname, ser_port, dt, c, v):
     # check input line regex
     badline = b'?\x15\r\n'                  # bad line (compilation error)
     defined = b'DEFINED\r\n'                # word already defined
-    compile = b'COMPILE ONLY\r\n'           # compile only error
+    compile_error = b'COMPILE ONLY\r\n'     # compile only error
     del_marker = b'-'                       # starts with -, delete marker
 
     lineno = 0
@@ -63,7 +63,7 @@ def xfr(fname, ser_port, dt, c, v):
 
             if ((resp.endswith(badline)
                  or resp.endswith(defined)
-                 or resp.endswith(compile))
+                 or resp.endswith(compile_error))
                     and not resp.startswith(del_marker)):
                 error_occurred = True
                 print(f"{nl}**** Error Occurred ****")
@@ -203,7 +203,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.3.2", prog_name="up")
+@click.version_option("2.3.3", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
@@ -229,6 +229,8 @@ def up(port, forthfile, delay_line, clean, baud, verbose):
     it will guess using 'usbmodem' or 'COM' as an indicator
     * Use '-c' to view the exact lines which are transferred, before transfer,
     file is cleaned of all comments, increasing transfer speed
+    * Use '-v' to view the response line for each line transmitted,
+    this allows for more detailed debugging
     * Use '-d n' for a n*10ms delay between lines, use if upload has
     errors uploading due to transfer speed
     * Use '-b n' for the serial baud rate, FlashForth has been tested with
