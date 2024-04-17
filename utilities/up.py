@@ -64,7 +64,7 @@ def xfr(fname, ser_port, dt, c, v):
             if resp.endswith(badline)\
                     or resp.endswith(defined)\
                     or compile_error in resp\
-                    or not resp.startswith(del_marker):
+                    and not resp.startswith(del_marker):
                 print(f"{nl}**** Error Occurred ****")
                 print(f"line {clean_orig[1][n]} was '{line.strip()}'")
                 print(f"Response was {str(resp)}")
