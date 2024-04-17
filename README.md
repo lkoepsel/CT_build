@@ -128,3 +128,66 @@ To disconnect CoolTerm from the serial port, use `ct_conn` in your scripts.
 
 ## Notes
 1. This repository contains the CoolTerm python program, *CoolTerm.py*, which is contained in the CoolTerm application download. It will be updated when CoolTerm is updated.
+
+## Documentation for Installed Commands
+### up - for building FlashForth applications
+```bash
+up --help
+Usage: up [OPTIONS] FORTHFILE
+
+  Builds an FlashForth application on a board. Use with Sublime Text build
+  automation https://github.com/lkoepsel/CT_build
+
+  * Requires a text file containing FlashForth words
+  * -p port is not required, use if up is not finding the proper serial port,
+  it will guess using 'usbmodem' or 'COM' as an indicator
+  * Use '-c' to view the exact lines which are transferred, before transfer,
+  file is cleaned of all comments, increasing transfer speed
+  * Use '-v' to view the response line for each line transmitted,
+  this allows for more detailed debugging
+  * Use '-d n' for a n*10ms delay between lines, use if upload has
+  errors uploading due to transfer speed
+  * Use '-b n' for the serial baud rate, FlashForth has been tested with
+  250000 and it works well, stock FlashForth is 38400
+
+Options:
+  --version                 Show the version and exit.
+  -p, --port TEXT           Port address (e.g., /dev/cu.usbmodem3101, COM3).
+  -c, --clean               Print clean file to be transferred and exit.
+  -d, --delay_line INTEGER  delay in milliseconds * 10 per line, default is 0
+  -b, --baud INTEGER        baud rate of serial port, default is 1,000,000
+  -v, --verbose             print response to every line
+  --help                    Show this message and exit.
+  ```
+
+  ### mpbuild - for building MicroPython applications
+  ```bash
+  mpbuild --help
+Usage: mpbuild [OPTIONS] BUILD
+
+  Builds an MicroPython application on a board. Uses a text file containing
+  names of folders and files to copy files and create folders, approriately to
+  a board running MicroPython. Requires -p port for serial port: as in -p
+  /dev/cu.usb... or -p COM3 Board storage must be empty or program exits.
+
+  Detailed example: https://github.com/lkoepsel/microserver
+
+  * Requires a text file containing the following:
+  * Filenames can NOT have blanks in their names.
+  * lines starting with '\n *' are comments and ignored
+  * lines starting with '/' are directories and are created
+  * lines starting with '!' are files to be copied and renamed,
+  + 2 fields are required, separated by a ', ', localname, piconame
+  * 1 line starting with '+' will be copied to main.py
+  * directory lines must be prior to the files in the directories
+  * all other lines are valid files in the current directory
+  * -p port required to set to board serial port
+
+Options:
+  --version        Show the version and exit.
+  -p, --port TEXT  Port address (e.g., /dev/cu.usbmodem3101, COM3).
+  -n, --dry-run    Show commands w/o execution & print file format.
+  --verbose        Print actions being performed.
+  --help           Show this message and exit.
+  ```
+
