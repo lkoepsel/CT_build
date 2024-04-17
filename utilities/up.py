@@ -61,13 +61,10 @@ def xfr(fname, ser_port, dt, c, v):
             n_bytes_sent += len(line)
             resp = ser_port.readline()
             resp_line = str(resp.rstrip(b'\r\n'), 'utf8')
-            if resp.endswith(badline):
-                error_type = "?"
-            elif resp.endswith(defined):
-                error_type = "DEFINED"
-            elif compile_error in resp:
-                error_type = "COMPILE ONLY"
-            elif not resp.startswith(del_marker):
+            if resp.endswith(badline)\
+                    or resp.endswith(defined)\
+                    or compile_error in resp\
+                    or not resp.startswith(del_marker):
                 print(f"{nl}**** Error Occurred ****")
                 print(f"line {clean_orig[1][n]} was '{line.strip()}'")
                 print(f"Response was {str(resp)}")
@@ -77,7 +74,7 @@ def xfr(fname, ser_port, dt, c, v):
                 if v:
                     orig_line_no = clean_orig[1][n]
                     # resp_line = str(resp.rstrip(b'\r\n'), 'utf8')
-                    print(f"{orig_line_no}:{resp_line}")
+                    print(f"{orig_line_no}: {resp_line}")
             time.sleep(int(dt) * .001)
 
         # Determine if last line is a line feed, if not
@@ -92,7 +89,7 @@ def xfr(fname, ser_port, dt, c, v):
         if not error_occurred:
             print(f"{nl}Success!")
             print(f"{resp} was response to last line in file")
-        return [error_type, n_bytes_sent, lineno]
+        return [error_occurred, n_bytes_sent, lineno]
 
     except (OSError) as e:
         if fname is not None:
@@ -207,7 +204,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.3.9", prog_name="up")
+@click.version_option("2.3.10", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
