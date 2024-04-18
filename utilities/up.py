@@ -49,7 +49,7 @@ def xfr(fname, ser_port, dt, c, v):
                 delay_send = int(re.search(r'\d', line).group())
                 if delay_send > 0:
                     sleep(delay_send * .001)
-                line = f'(delay {delay_send * .001} seconds)'
+                line = ''
 
             original.append(line)
             lineno += 1
@@ -201,7 +201,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.4.16", prog_name="up")
+@click.version_option("2.4.17", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
