@@ -29,38 +29,55 @@ def xfr(fname, ser_port, dt, c, v):
     original = []
     nl = '\n'
 
+    line_functions = {
+        'empty\n': empty_ready,
+        'flash\n': flash_ready,
+        'eeprom\n': eeprom_ready,
+        'ram\n': ram_ready
+    }
+
     try:
         # Wait for a ready response from a warm boot, prior to uploading file
         resp = warm_ready(ser_port, dt)
         clean_orig = clean_file(fname, c)
         error_occurred = False
         for n, line in enumerate(clean_orig[0], 1):
-            if line == 'empty\n':
-                resp = empty_ready(ser_port)
-                print(f"{resp} response received, uploading")
-                pass
+            # if line == 'empty\n':
+            #     resp = empty_ready(ser_port)
+            #     print(f"{resp} response received, uploading")
+            #     pass
 
-            if line == 'flash\n':
-                resp = flash_ready(ser_port)
-                print(f"{resp} response received, uploading")
-                pass
+            # if line == 'flash\n':
+            #     resp = flash_ready(ser_port)
+            #     print(f"{resp} response received, uploading")
+            #     pass
 
-            if line == 'eeprom\n':
-                resp = eeprom_ready(ser_port)
-                print(f"{resp} response received, uploading")
-                pass
+            # if line == 'eeprom\n':
+            #     resp = eeprom_ready(ser_port)
+            #     print(f"{resp} response received, uploading")
+            #     pass
 
-            if line == 'ram\n':
-                resp = ram_ready(ser_port)
-                print(f"{resp} response received, uploading")
-                pass
+            # if line == 'ram\n':
+            #     resp = ram_ready(ser_port)
+            #     print(f"{resp} response received, uploading")
+            #     pass
 
-            if pause_line.match(line):
-                delay_send = int(re.search(r'\d', line).group())
+            # if pause_line.match(line):
+            #     delay_send = int(re.search(r'\d', line).group()) * .001
+            #     print(f"{delay_send=}")
+            #     if delay_send > 0:
+            #         time.sleep(delay_send)
+            #     line = ''
+            #     pass
+            if line in line_functions:
+                resp = line_functions[line](ser_port)
+                print(f"{resp} response received, uploading")
+            elif pause_line.match(line):
+                delay_send = int(re.search(r'\d', line).group()) * .001
+                print(f"{delay_send=}")
                 if delay_send > 0:
-                    time.sleep(delay_send * .001)
+                    time.sleep(delay_send)
                 line = ''
-                pass
 
             original.append(line)
             lineno += 1
@@ -213,7 +230,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.4.11", prog_name="up")
+@click.version_option("2.4.12", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
