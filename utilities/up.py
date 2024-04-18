@@ -5,7 +5,7 @@ import serial.tools.list_ports
 import sys
 from utilities.CT_connect import conn
 from utilities.CT_disconnect import disc
-import time
+from time import sleep
 import datetime
 
 
@@ -46,11 +46,11 @@ def xfr(fname, ser_port, dt, c, v):
                 resp = line_functions[line](ser_port)
                 print(f"{resp} response received, uploading")
             elif pause_line.match(line):
-                delay_send = int(re.search(r'\d', line).group()) * .001
+                delay_send = float(int(re.search(r'\d', line).group()) * .001)
                 print(f"{delay_send=}")
                 if delay_send > 0:
-                    time.sleep(.001)
-                line = '\\'
+                    sleep(delay_send)
+                line = ''
 
             original.append(line)
             lineno += 1
@@ -74,7 +74,7 @@ def xfr(fname, ser_port, dt, c, v):
                     orig_line_no = clean_orig[1][n]
                     resp_line = str(resp.rstrip(b'\r\n'), 'utf8')
                     print(f"{orig_line_no}: {resp_line}")
-            time.sleep(int(dt) * .001)
+            sleep(int(dt) * .001)
 
         # Determine if last line is a line feed, if not
         # Warn and send a line feed as last line
@@ -110,7 +110,6 @@ def clean_file(ff_file, c):
         if not (comment.match(line) or blankline.match(line)):
             no_comments = re.sub(r'^(.*?)(\\.*)', "\\1", line)
             f.append(no_comments)
-            # print(f"{n=} {c_line=} {no_comments}")
             lines.append(n)
             c_line += 1
     if c:
@@ -128,7 +127,7 @@ def warm_ready(s, dt):
     init_response = ""
     while (init_response != ready):
         s.write(str.encode(warm))
-        time.sleep(int(dt) * .01)
+        sleep(int(dt) * .01)
         init_response = s.readline()
     return("warm")
 
@@ -203,7 +202,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.4.14", prog_name="up")
+@click.version_option("2.4.15", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
