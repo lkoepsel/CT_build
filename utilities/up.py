@@ -57,7 +57,7 @@ def xfr(fname, ser_port, dt, c, v):
 
             if pause_line.match(line):
                 time.sleep(5 * .001)
-                line = '\\ #p5 paused for 5 milliseconds '
+                line = ''
                 pass
 
             original.append(line)
@@ -211,7 +211,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.4.7", prog_name="up")
+@click.version_option("2.4.8", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
