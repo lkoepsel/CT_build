@@ -36,28 +36,28 @@ def xfr(fname, ser_port, dt, c, v):
         for n, line in enumerate(clean_orig[0], 1):
             if line == 'empty\n':
                 resp = empty_ready(ser_port)
-                print(f"{resp} response received, uploading", fname)
+                print(f"{resp} response received, uploading")
                 pass
 
             if line == 'flash\n':
                 resp = flash_ready(ser_port)
-                print(f"{resp} response received, uploading", fname)
+                print(f"{resp} response received, uploading")
                 pass
 
             if line == 'eeprom\n':
                 resp = eeprom_ready(ser_port)
-                print(f"{resp} response received, uploading", fname)
+                print(f"{resp} response received, uploading")
                 pass
 
             if line == 'ram\n':
                 resp = ram_ready(ser_port)
-                print(f"{resp} response received, uploading", fname)
+                print(f"{resp} response received, uploading")
                 pass
 
             if '#p5' in line:
                 # resp = ram_ready(ser_port)
                 time.sleep(5 * .001)
-                print(f"{resp} pausing for 5 milliseconds", fname)
+                print(f"{line} pausing for 5 milliseconds")
                 line = ''
                 pass
 
@@ -212,7 +212,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.4.3", prog_name="up")
+@click.version_option("2.4.4", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
