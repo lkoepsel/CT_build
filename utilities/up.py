@@ -54,7 +54,7 @@ def xfr(fname, ser_port, dt, c, v):
                 print(f"{resp} response received, uploading", fname)
                 pass
 
-            if line == '#p5\n':
+            if '#p5\n' in line:
                 # resp = ram_ready(ser_port)
                 time.sleep(5 * .001)
                 print(f"{resp} response received, uploading", fname)
