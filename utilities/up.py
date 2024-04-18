@@ -46,10 +46,10 @@ def xfr(fname, ser_port, dt, c, v):
                 resp = line_functions[line](ser_port)
                 print(f"{resp} response received, uploading")
             elif pause_line.match(line):
-                delay_send = int(re.search(r'\d', line).group()) / 1000
-                if delay_send > 0:
-                    print(f"{delay_send=}")
-                    sleep(delay_send / 1000)
+                # delay_send = int(re.search(r'\d', line).group()) / 1000
+                # if delay_send > 0:
+                # sleep(delay_send / 1000)
+                sleep(.001)
                 line = ''
 
             original.append(line)
@@ -202,7 +202,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.4.20", prog_name="up")
+@click.version_option("2.4.21", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
