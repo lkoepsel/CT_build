@@ -54,7 +54,7 @@ def xfr(fname, ser_port, dt, c, v):
                 print(f"{resp} response received, uploading", fname)
                 pass
 
-            if '#p5\n' in line:
+            if '#p5' in line:
                 # resp = ram_ready(ser_port)
                 time.sleep(5 * .001)
                 print(f"{resp} response received, uploading", fname)
@@ -211,7 +211,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.4.1", prog_name="up")
+@click.version_option("2.4.2", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
