@@ -196,7 +196,7 @@ def check_port():
 
 
 @click.command('up')
-@click.version_option("2.4.22", prog_name="up")
+@click.version_option("2.5", prog_name="up")
 @click.option('-p', '--port', 'port', required=False, type=str, default='TBD',
               help='Port address (e.g., /dev/cu.usbmodem3101, COM3).')
 @click.argument('forthfile',
@@ -206,8 +206,8 @@ def check_port():
               help='Print clean file to be transferred and exit.')
 @click.option('-d', '--delay_line', 'delay_line', default=0,
               help='delay in milliseconds * 10 per line, default is 0')
-@click.option('-b', '--baud', 'baud', default=250000,
-              help='baud rate of serial port, default is 1,000,000')
+@click.option('-b', '--baud', 'baud', default=1000000,
+              help='baud rate of serial port, default is 1000000')
 @click.option('-v', '--verbose', 'verbose', is_flag=True, default=False,
               help='print response to every line')
 def up(port, forthfile, delay_line, clean, baud, verbose):
@@ -227,7 +227,7 @@ def up(port, forthfile, delay_line, clean, baud, verbose):
     * Use '-d n' for a n*10ms delay between lines, use if upload has
     errors uploading due to transfer speed
     * Use '-b n' for the serial baud rate, FlashForth has been tested with
-    250000 and it works well, stock FlashForth is 38400
+    1000000 and it works well, 250000 works well, stock FlashForth is 38400
     """
 
     disc()
