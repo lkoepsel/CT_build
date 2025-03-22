@@ -46,7 +46,7 @@ def conn():
     # Move focus to CoolTerm
     if OS == "Darwin":
         subprocess.run(["osascript", "-e",
-                        'tell application "CoolTerm" to activate'])
+                        'activate application "CoolTerm"'])
     # end macOS
 
     if OS == "Windows":
