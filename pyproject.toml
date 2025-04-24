@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "CT_build"
+version = "2.4"
+description = "Embedded file utilities"
+readme = { file = "README.md", content-type = "text/markdown" }
+authors = [{ name = "Lief Koepsel", email = "lkoepsel@wellys.com" }]
+keywords = ["Python", "embedded files"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Communications",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "pygetwindow>=0.0.9; sys_platform == 'win32'",
+    "pyautogui>=0.9; sys_platform == 'win32'",
+    "click>=8.0",
+    "mpremote>=1.25",
+]
+urls = { "Homepage" = "https://github.com/lkoepsel/CT_build" }
+
+[project.scripts]
+ct_conn = "utilities.CT_connect:conn"
+ct_disc = "utilities.CT_disconnect:disc"
+mpbuild = "utilities.mpbuild:build"
+up = "utilities.up:up"
+
+[tool.setuptools]
+packages = ["utilities"]
