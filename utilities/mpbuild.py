@@ -59,7 +59,7 @@ def build(port, build, dryrun, verbose):
     """
     Builds an MicroPython application on a board.
     Uses a text file containing names of folders and files to copy files
-    and create folders, approriately to a board running MicroPython.
+    and create folders, appropriately to a board running MicroPython.
     Requires -p port for serial port: as in -p /dev/cu.usb... or -p COM3
     Board storage must be empty or program exits.
 
